@@ -13,7 +13,7 @@
     <div class="container-fluid custom-container d-flex justify-content-center align-items-center">
         <div class="col-12 col-sm-8 col-md-6 col-lg-4">
             <div class="card p-4 justify-content-center">
-                <h1 class="text-center mb-4">Bienvenido a la Landing Page</h1>
+                <h1 class="text-center mb-4">Bienvenido</h1>
                 <div class="embed-responsive embed-responsive-16by9 mb-3 d-flex justify-content-center align-items-center">
                     <?php $video_id = session()->get('video_id', 'UJ0Z8JBFIYw'); ?>
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/<?= $video_id; ?>" allowfullscreen></iframe>
@@ -26,6 +26,11 @@
                         <input type="text" class="form-control" id="video_url" name="video_url" placeholder="https://www.youtube.com/embed/UJ0Z8JBFIYw" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100" name="update_video">Actualizar Video</button>
+                </form>
+
+                <!-- EDITAR USUARIO -->
+                <form method="post" action="<?= base_url('edit') ?>">
+                    <button type="submit" class="btn btn-danger w-100 mt-3" name="logout">Editar usuario</button>
                 </form>
 
                 <!-- CERRAR SESIÓN -->

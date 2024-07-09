@@ -58,4 +58,9 @@ class UserModel extends Model
             }
         }
     }
+
+    public function updateUser($id, $data)
+    {
+        return $this->where('id', $id)->set($data)->update();
+    }
 }

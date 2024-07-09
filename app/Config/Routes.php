@@ -13,4 +13,8 @@ $routes->get('/check-db', 'Base::index');
 $routes->get('/login', 'Login::index');
 $routes->post('/login-users', 'Login::process');
 
+$routes->get('/edit', 'Edit::index');
+$routes->post('/edit-users', 'Edit::save');
+
+
 $routes->post('/logout', 'Landing::logout');
