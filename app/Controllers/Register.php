@@ -20,7 +20,7 @@ class Register extends BaseController
     {
         $userModel = new UserModel();
 
-        // Obtener datos del formulario
+        // FORMILARIO DATOS
         $data = [
             'name' => $this->request->getPost('name'),
             'email' => $this->request->getPost('email'),
@@ -28,18 +28,18 @@ class Register extends BaseController
         ];
 
 
-        // Guardar los datos en la base de datos
+        // GUARDADO
         if ($userModel->saveUser($data)) {
-            // Preparar el mensaje de éxito
+
             $message = "Registro exitoso para " . esc($data['name']);
         } else {
-            // Preparar el mensaje de error con detalles específicos
+
             $db = \Config\Database::connect();
             $error = $db->error();
             $message = "Error al registrar el usuario: " . $error['message'];
         }
 
-        // Mostrar el mensaje en la vista 'register'
+
         return view('register', ['message' => $message]);
     }
 }

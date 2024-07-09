@@ -6,11 +6,11 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-    protected $table = 'user'; // Nombre de la tabla en la base de datos
-    protected $primaryKey = 'id'; // Clave primaria de la tabla
-    protected $allowedFields = ['name', 'email', 'password']; // Campos que se pueden insertar/actualizar
+    protected $table = 'user';
+    protected $primaryKey = 'id';
+    protected $allowedFields = ['name', 'email', 'password'];
 
-    // Callbacks
+
     protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
 
@@ -50,7 +50,7 @@ class UserModel extends Model
         try {
             return $this->insert($data);
         } catch (\Exception $e) {
-            // Manejar el error de duplicación
+
             if ($this->db->error()['code'] == 1062) {
                 return false;
             } else {

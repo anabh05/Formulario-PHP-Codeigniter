@@ -14,22 +14,20 @@
  </form>
 
  <?php
-    // Datos de conexión a la base de datos
+    // CONEXION BBDD
     $servername = "localhost";
     $username = "ana_nuevo";
     $password = "root";
     $dbname = "users";
 
-    // Conexión a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Verificar la conexión
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
     echo "Connected successfully!<br>";
 
-    // Procesamiento del formulario de registro
+    // FORMULARIO
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $name = $_POST["name"];
         $email = $_POST["email"];
@@ -45,13 +43,12 @@
         }
     }
 
-    // Consulta SQL para obtener usuarios
     $query = "SELECT name FROM user";
     $result = $conn->query($query);
 
     echo "<h1>Listado de Usuarios</h1>";
     if ($result->num_rows > 0) {
-        // Mostrar los datos usando un bucle while
+
         while ($row = $result->fetch_assoc()) {
             echo "<p>Nombre: " . $row["name"] . "</p>";
         }
@@ -59,7 +56,6 @@
         echo "No se encontraron usuarios.";
     }
 
-    // Cerrar la conexión
     $conn->close();
     ?>
  </body>
