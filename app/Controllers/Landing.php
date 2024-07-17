@@ -4,12 +4,19 @@ namespace App\Controllers;
 
 class Landing extends BaseController
 {
-    public function index(): string
+
+    public function index()
     {
 
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->to('/login');
+        // if (!session()->has('logged_in') || !session('logged_in')) {
+        //     return redirect()->to('/login');
+        // }
+
+        if (!session()->has('user_id') || !session('user_id')) {
+            return redirect()->to('/landing');
         }
+
+        $username = session()->get('username');
 
         // ID DEL VIDEO
         $video_id = session()->get('video_id', 'UJ0Z8JBFIYw');
@@ -18,7 +25,7 @@ class Landing extends BaseController
     }
 
     // VALIDAR URL VIDEO
-    private function validateYouTubeURL($url)
+    public function validateYouTubeURL($url)
     {
         if (empty($url)) {
             return "";

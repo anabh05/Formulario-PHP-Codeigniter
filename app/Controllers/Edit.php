@@ -2,61 +2,52 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
-
 class Edit extends BaseController
 {
-    public function __construct()
+    public function index()
     {
-        helper(['url', 'form']);
-    }
-
-    public function index(): string
-    {
-        if (!session()->has('logged_in') || !session('logged_in')) {
+        // Verificar si el usuario está logueado
+        if (!$this->session->has('user_id')) {
             return redirect()->to('/login');
         }
 
-        // Obtener el ID de usuario desde la sesión
-        $userId = session()->get('user_id');
+        // Obtener datos del usuario desde la sesión o la base de datos
+        $user = session()->get('user_data');
 
-        // Obtener los datos del usuario desde el modelo
-        $userModel = new UserModel();
-        $userData = $userModel->find($userId);
-
-        // Verificar si se encontraron los datos del usuario
-        if (!$userData) {
-            return redirect()->to('/login')->with('error', 'Usuario no encontrado');
+        // Verificar si user_data está definido
+        if ($user === null) {
+            return redirect()->to('/landing')->with('error', 'No se pudieron obtener los datos del usuario.');
         }
 
-        // Pasar los datos del usuario a la vista de edición
-        return view('edit', ['userData' => $userData]);
+        return view('edit', ['user' => $user]);
     }
 
-    public function save(): string
+    public function save()
     {
-        $userModel = new UserModel();
-
-        // Obtener el ID de usuario desde la sesión
-        $userId = session()->get('user_id');
-
-        // FORMULARIO DATOS
-        $data = [
-            'id' => $userId, // Asegurarse de incluir el ID del usuario
-            'name' => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
-            'password' => $this->request->getPost('password'),
-        ];
-
-        // GUARDAR
-        if ($userModel->updateUser($userId, $data)) {
-            $message = "Usuario editado con éxito " . esc($data['name']);
-        } else {
-            $db = \Config\Database::connect();
-            $error = $db->error();
-            $message = "Error al actualizar el usuario: " . $error['message'];
+        // Verificar si el usuario está logueado
+        if (!$this->session->has('user_id')) {
+            return redirect()->to('/login');
         }
 
-        return view('edit-users', ['message' => $message]);
+        // Verificar si el método de solicitud es POST
+        if ($this->request->getMethod() == 'post') {
+            // Obtener datos desde el formulario
+            $userData = [
+                'username' => $this->request->getPost('username'),
+                'email' => $this->request->getPost('email'),
+                // Agrega más campos según sea necesario
+            ];
+
+            // Actualizar datos del usuario en la base de datos
+            $userModel = new \App\Models\UserModel();
+            $userModel->update(session()->get('user_id'), $userData);
+
+            // Actualizar datos en la sesión
+            session()->set('user_data', $userData);
+
+            return redirect()->to('/edit')->with('success', 'Perfil actualizado con éxito');
+        }
+
+        return redirect()->to('/edit');
     }
 }

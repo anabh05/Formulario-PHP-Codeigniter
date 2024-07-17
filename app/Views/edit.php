@@ -1,66 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio sesión</title>
-    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Editar Perfil</title>
+    <link href="<?= base_url('node_modules/bootstrap/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
 </head>
 
 <body>
+    <div class="container mt-5">
+        <h1 class="text-center">Editar Perfil</h1>
 
-    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
-
-        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-
-            <div class="card-header text-center">
-                <h2>Actualiza tus datos</h2>
+        <!-- Mensajes de éxito o error -->
+        <?php if (session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success" role="alert">
+                <?= session()->getFlashdata('success') ?>
             </div>
+        <?php endif; ?>
 
-            <?php if (isset($message)) : ?>
-                <div class="alert alert-success">
-                    <?= esc($message) ?>
-                </div>
-            <?php endif; ?>
+        <?php if (session()->getFlashdata('error')) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?= session()->getFlashdata('error') ?>
+            </div>
+        <?php endif; ?>
 
-            <?php if (isset($errors)) : ?>
-                <div class="alert alert-danger">
-                    <ul>
-                        <?php foreach ($errors as $error) : ?>
-                            <li><?= esc($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-
-            <form method="post" action="<?= base_url('edit-users') ?>">
-
+        <?php if (isset($user) && $user !== null) : ?>
+            <form action="<?= base_url('edit') ?>" method="post">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" name="name" value="<?= esc($userData['name']) ?>">
+                    <label for="username" class="form-label">Nombre de Usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" value="<?= esc($user['username']) ?>" required>
                 </div>
-
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" value="<?= esc($userData['email']) ?>">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" value="<?= esc($user['email']) ?>" required>
                 </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="Nueva Contraseña">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Actualizar</button>
-
+                <!-- Agrega más campos según sea necesario -->
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             </form>
+        <?php else : ?>
+            <div class="alert alert-danger" role="alert">
+                No se pudieron cargar los datos del usuario.
+            </div>
+        <?php endif; ?>
 
-        </div>
-
+        <a href="<?= base_url('landing') ?>" class="btn btn-secondary mt-3">Cancelar</a>
     </div>
-
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="<?= base_url('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
 </body>
 
 </html>

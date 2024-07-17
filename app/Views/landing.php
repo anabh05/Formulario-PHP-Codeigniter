@@ -28,10 +28,13 @@
                     <button type="submit" class="btn btn-primary w-100" name="update_video">Actualizar Video</button>
                 </form>
 
+
                 <!-- EDITAR USUARIO -->
-                <form method="post" action="<?= base_url('edit') ?>">
-                    <button type="submit" class="btn btn-danger w-100 mt-3" name="logout">Editar usuario</button>
+                <form method="get" action="<?= base_url('edit') ?>">
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Editar usuario</button>
                 </form>
+
+
 
                 <!-- CERRAR SESIÓN -->
                 <form method="post" action="<?= base_url('logout') ?>">

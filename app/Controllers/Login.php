@@ -19,8 +19,10 @@ class Login extends BaseController
     {
         return view('login');
     }
+
     public function process()
     {
+
 
         $email = $this->request->getPost('email');
         $password = strval($this->request->getPost('password'));
@@ -41,7 +43,6 @@ class Login extends BaseController
             return view('login', $data);
         }
     }
-
 
     public function logout()
     {
