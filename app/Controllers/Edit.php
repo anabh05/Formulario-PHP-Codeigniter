@@ -3,63 +3,54 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use CodeIgniter\Controller;
 
 class Edit extends BaseController
 {
     public function index()
     {
-        // Verificar si el usuario está logueado
         if (!$this->session->has('user_id')) {
             return redirect()->to('/login');
         }
 
-        // Obtener el ID del usuario desde la sesión
-        $userId = $this->session->get('user_id');
+        $user = session()->get('user_data');
 
-        // Obtener datos del usuario desde la base de datos
-        $userModel = new UserModel();
-        $user = $userModel->find($userId);
-
-        // Verificar si se obtuvieron los datos del usuario
         if ($user === null) {
-            return redirect()->to('/edit')->with('error', 'No se pudieron obtener los datos del usuario.');
+            return redirect()->to('/landing')->with('error', 'No se pudieron obtener los datos del usuario.');
         }
-
-        // Establecer los datos del usuario en la sesión
-        $this->session->set('user_data', $user);
 
         return view('edit', ['user' => $user]);
     }
 
     public function save()
     {
-        // Verificar si el usuario está logueado
         if (!$this->session->has('user_id')) {
             return redirect()->to('/login');
         }
 
-        // Verificar si el método de solicitud es POST
-        if ($this->request->getMethod() == 'post') {
-            // Obtener datos desde el formulario
+        if ($this->request->getMethod() === 'post') {
             $userData = [
                 'name' => $this->request->getPost('name'),
                 'email' => $this->request->getPost('email'),
-                // Agrega más campos según sea necesario
+                // Puedes agregar el campo password si es necesario, pero ten en cuenta que no es seguro almacenar contraseñas en texto plano.
+                // 'password' => $this->request->getPost('password'),
             ];
 
-            // Obtener el ID del usuario desde la sesión
-            $userId = $this->session->get('user_id');
+            if (empty($userData['name']) || empty($userData['email'])) {
+                return redirect()->to('/edit')->with('error', 'Por favor, complete todos los campos.');
+            }
 
-            // Actualizar datos del usuario en la base de datos
             $userModel = new UserModel();
-            $userModel->update($userId, $userData);
+            $updateStatus = $userModel->update(session()->get('user_id'), $userData);
 
-            // Actualizar datos en la sesión
-            $this->session->set('user_data', $userModel->find($userId));
-
-            return redirect()->to('/edit')->with('success', 'Perfil actualizado con éxito');
+            if ($updateStatus) {
+                session()->set('user_data', $userData);
+                return redirect()->to('/edit')->with('success', 'Perfil actualizado con éxito');
+            } else {
+                return redirect()->to('/home')->with('error', 'No se pudo actualizar el perfil.');
+            }
         }
 
-        return redirect()->to('/edit');
+        return redirect()->to('/edit')->with('error', 'Método de solicitud no permitido.');
     }
 }

@@ -60,3 +60,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 $config['error_reporting'] = E_ALL;
 $config['display_errors'] = TRUE;
+
+if (ENVIRONMENT === 'development') {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}

@@ -30,7 +30,6 @@ class Register extends BaseController
 
         // GUARDADO
         if ($userModel->saveUser($data)) {
-
             $message = "Registro exitoso para " . esc($data['name']);
         } else {
 

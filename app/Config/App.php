@@ -6,6 +6,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class App extends BaseConfig
 {
+    //public $displayErrors = true;
+    //public $environment = ENVIRONMENT;
     /**
      * --------------------------------------------------------------------------
      * Base Site URL

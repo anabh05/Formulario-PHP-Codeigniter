@@ -26,16 +26,20 @@
         <?php endif; ?>
 
         <?php if (isset($user) && $user !== null) : ?>
-            <form action="<?= base_url('edit') ?>" method="post">
+            <form action="<?= base_url('edit-users') ?>" method="post">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Nombre de Usuario</label>
+                    <label for="name" class="form-label">Nombre</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?= esc($user['name']) ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo Electrónico</label>
                     <input type="email" class="form-control" id="email" name="email" value="<?= esc($user['email']) ?>" required>
                 </div>
-                <!-- Agrega más campos según sea necesario -->
+                <!-- Si necesitas manejar contraseñas, añade el campo de contraseña, pero ten en cuenta la seguridad -->
+                <!-- <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div> -->
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             </form>
         <?php else : ?>
