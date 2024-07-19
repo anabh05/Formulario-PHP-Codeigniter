@@ -29,7 +29,7 @@
             <form action="<?= base_url('edit') ?>" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de Usuario</label>
-                    <input type="text" class="form-control" id="username" name="username" value="<?= esc($user['username']) ?>" required>
+                    <input type="text" class="form-control" id="name" name="name" value="<?= esc($user['name']) ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo Electrónico</label>

@@ -16,7 +16,9 @@ class Landing extends BaseController
             return redirect()->to('/landing');
         }
 
-        $username = session()->get('username');
+        //$username = session()->get('username');
+        $user = session()->get('user_data');
+
 
         // ID DEL VIDEO
         $video_id = session()->get('video_id', 'UJ0Z8JBFIYw');

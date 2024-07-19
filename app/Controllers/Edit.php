@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
+
 class Edit extends BaseController
 {
     public function index()
@@ -11,13 +13,20 @@ class Edit extends BaseController
             return redirect()->to('/login');
         }
 
-        // Obtener datos del usuario desde la sesión o la base de datos
-        $user = session()->get('user_data');
+        // Obtener el ID del usuario desde la sesión
+        $userId = $this->session->get('user_id');
 
-        // Verificar si user_data está definido
+        // Obtener datos del usuario desde la base de datos
+        $userModel = new UserModel();
+        $user = $userModel->find($userId);
+
+        // Verificar si se obtuvieron los datos del usuario
         if ($user === null) {
-            return redirect()->to('/landing')->with('error', 'No se pudieron obtener los datos del usuario.');
+            return redirect()->to('/edit')->with('error', 'No se pudieron obtener los datos del usuario.');
         }
+
+        // Establecer los datos del usuario en la sesión
+        $this->session->set('user_data', $user);
 
         return view('edit', ['user' => $user]);
     }
@@ -33,17 +42,20 @@ class Edit extends BaseController
         if ($this->request->getMethod() == 'post') {
             // Obtener datos desde el formulario
             $userData = [
-                'username' => $this->request->getPost('username'),
+                'name' => $this->request->getPost('name'),
                 'email' => $this->request->getPost('email'),
                 // Agrega más campos según sea necesario
             ];
 
+            // Obtener el ID del usuario desde la sesión
+            $userId = $this->session->get('user_id');
+
             // Actualizar datos del usuario en la base de datos
-            $userModel = new \App\Models\UserModel();
-            $userModel->update(session()->get('user_id'), $userData);
+            $userModel = new UserModel();
+            $userModel->update($userId, $userData);
 
             // Actualizar datos en la sesión
-            session()->set('user_data', $userData);
+            $this->session->set('user_data', $userModel->find($userId));
 
             return redirect()->to('/edit')->with('success', 'Perfil actualizado con éxito');
         }
