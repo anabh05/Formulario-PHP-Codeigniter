@@ -12,7 +12,6 @@
     <div class="container mt-5">
         <h1 class="text-center">Editar Perfil</h1>
 
-        <!-- Mensajes de éxito o error -->
         <?php if (session()->getFlashdata('success')) : ?>
             <div class="alert alert-success" role="alert">
                 <?= session()->getFlashdata('success') ?>
@@ -25,26 +24,29 @@
             </div>
         <?php endif; ?>
 
-        <?php if (isset($user) && $user !== null) : ?>
-            <form action="<?= base_url('edit-users') ?>" method="post">
+        <?php if (isset($user)) : ?>
+
+            <form action="<?= base_url('edit/save') ?>" method="post">
+                <?= csrf_field() ?>
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nombre</label>
+                    <label for="username" class="form-label">Nombre de Usuario</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?= esc($user['name']) ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo Electrónico</label>
                     <input type="email" class="form-control" id="email" name="email" value="<?= esc($user['email']) ?>" required>
                 </div>
-                <!-- Si necesitas manejar contraseñas, añade el campo de contraseña, pero ten en cuenta la seguridad -->
-                <!-- <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div> -->
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <form action="<?= base_url('edit/delete') ?>" method="post" class="mt-3">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-danger">Borrar Usuario</button>
+                </form>
             </form>
+
+
         <?php else : ?>
             <div class="alert alert-danger" role="alert">
-                No se pudieron cargar los datos del usuario.
+                No se puede cargar el usuario.
             </div>
         <?php endif; ?>
 

@@ -16,7 +16,9 @@ $routes->get('/login', 'Login::index');
 $routes->post('/login-users', 'Login::process');
 
 $routes->get('/edit', 'Edit::index');
-$routes->post('/edit-users', 'Edit::save');
+$routes->post('/edit/save', 'Edit::save');
+$routes->post('edit/delete', 'Edit::delete');
+
 
 $routes->get('/landing', 'Landing::index');
 $routes->post('/logout', 'Landing::logout');
